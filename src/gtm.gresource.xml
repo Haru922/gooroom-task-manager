@@ -1,0 +1,7 @@
+<??xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/kr/gooroom/Gooroom-Task-Manager">
+    <file preprocess="xml-stripblanks">gtm_window.ui</file>
+    <file preprocess="xml-stripblanks">gtm_menu.ui</file>
+  </gresource>
+</gresources>
