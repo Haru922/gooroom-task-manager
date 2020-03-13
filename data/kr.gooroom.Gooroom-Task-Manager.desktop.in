@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Gooroom-Task-Manager
+Exec=gooroom-task-manager
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true
+Icon=Gooroom-Task-Manager.svg

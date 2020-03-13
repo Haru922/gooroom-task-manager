@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gooroom-task-manager">
+	<schema id="kr.gooroom.Gooroom-Task-Manager" path="/kr/gooroom/Gooroom-Task-Manager/">
+	</schema>
+</schemalist>
