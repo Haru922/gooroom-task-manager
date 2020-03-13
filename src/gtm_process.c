@@ -44,11 +44,36 @@ gtm_get_tasks_info (tasks_model *ptasks)
 }
 
 void
-gtm_get_cpu_info (guint64 cur_rtime,
-                  guint64 cur_total,
-                  guint64 pr_rtime,
-                  guint64 pr_total,
-                  char   *cpu)
+gtm_get_running_user_name (char *user_name)
+{
+    glibtop_proclist    all_tasks;
+    glibtop_proc_uid    puid;
+    pid_t              *pids;
+    pid_t               pid;
+    struct passwd      *user;
+    gint                i;
+
+    pids = glibtop_get_proclist (&all_tasks, GLIBTOP_KERN_PROC_ALL, getuid ());
+    for (i = 0; i < all_tasks.number; i++)
+    {
+        pid = pids[i];
+
+        if (pid == getpid ())
+        {
+            glibtop_get_proc_uid (&puid, pid);
+            user = getpwuid (puid.uid);
+            g_strlcpy (user_name, user->pw_name, GTM_USER_NAME_LIMIT);
+            break;
+        }
+    }
+}
+
+void
+gtm_get_process_cpu_info (guint64 cur_rtime,
+                          guint64 cur_total,
+                          guint64 pr_rtime,
+                          guint64 pr_total,
+                          char   *cpu)
 {
     glibtop_cpu cpu_buf;
     guint64     diff;
@@ -67,6 +92,26 @@ gtm_get_cpu_info (guint64 cur_rtime,
 
     gtm_gdouble_to_str (usage, cpu);
     g_strlcat (cpu, " %", GTM_INFO_BUF);
+}
+
+gdouble
+gtm_get_total_cpu_info (void)
+{
+    glibtop_cpu cpu_buf;
+
+    glibtop_get_cpu (&cpu_buf);
+
+    return (double) cpu_buf.user / (double) cpu_buf.total;
+}
+
+gdouble
+gtm_get_total_memory_info (void)
+{
+    glibtop_mem mem_buf;
+
+    glibtop_get_mem (&mem_buf);
+
+    return (double) mem_buf.user / (double) mem_buf.total;
 }
 
 int
@@ -120,7 +165,7 @@ gtm_get_process_cells (process_cell_model *pcells,
         glibtop_get_proc_kernel (&pkernel, pid);
         user = getpwuid (puid.uid);
         g_strlcpy (pcells[pcount].user_name, user->pw_name, GTM_USER_NAME_LIMIT);
-        gtm_get_cpu_info (0, 0, 0, 0, pcells[pcount].cpu);
+        gtm_get_process_cpu_info (0, 0, 0, 0, pcells[pcount].cpu);
         pcells[pcount].rtime = ptime.rtime;
         pcells[pcount].total = cpu_buf.total;
 

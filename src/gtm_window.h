@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <signal.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <gtk/gtk.h>
 
@@ -56,7 +57,6 @@ void       gtm_build_root_process_list (GtmWindow *win);
 void       gtm_build_user_process_list (GtmWindow *win);
 void       gtm_rebuild_root_process_list (GtmWindow *win);
 void       gtm_rebuild_user_process_list (GtmWindow *win);
-void       renew_all (GtmWindow *win);
 
 G_END_DECLS
 

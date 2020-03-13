@@ -24,8 +24,10 @@ G_BEGIN_DECLS
 
 void gtm_get_tasks_info (tasks_model *ptasks);
 void gtm_get_target_pid_info (process_cell_model *pcell, gint32 target_pid);
-void gtm_get_cpu_info (guint64 cur_rtime, guint64 cur_total, guint64 pr_rtime, guint64 pr_total, char *cpu);
+void gtm_get_process_cpu_info (guint64 cur_rtime, guint64 cur_total, guint64 pr_rtime, guint64 pr_total, char *cpu);
 int  gtm_get_process_cells (process_cell_model *pcells, gint mode);
+gdouble gtm_get_total_cpu_info (void);
+gdouble gtm_get_total_memory_info (void);
 
 G_END_DECLS
 

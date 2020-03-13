@@ -86,7 +86,7 @@ gtm_update_process_list (GtmTreeViewModel *tree_view_model,
                 found = TRUE;
                 gtk_tree_model_get (GTK_TREE_MODEL (tree_view_model), &iter, PR_RTIME_COLUMN, &pr_rtime, -1);
                 gtk_tree_model_get (GTK_TREE_MODEL (tree_view_model), &iter, PR_TOTAL_COLUMN, &pr_total, -1);
-                gtm_get_cpu_info (pcells[i].rtime, pcells[i].total, pr_rtime, pr_total, pcells[i].cpu);
+                gtm_get_process_cpu_info (pcells[i].rtime, pcells[i].total, pr_rtime, pr_total, pcells[i].cpu);
                 gtk_list_store_set (GTK_LIST_STORE (tree_view_model), &iter,
                                     PROCESS_NAME_COLUMN, pcells[i].process_name,
                                     USER_NAME_COLUMN, pcells[i].user_name,

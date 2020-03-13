@@ -176,12 +176,48 @@ kill_button_clicked (GtkButton *kill_button,
     GtkTreeSelection *selection;
     GtkTreeModel     *process_model;
     GtkTreeIter       iter;
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
 
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (process_list));
     if (gtk_tree_selection_get_selected (selection, &process_model, &iter))
     {
         gtk_tree_model_get (process_model, &iter, PID_COLUMN, &target_pid, -1);
-        kill (target_pid, SIGKILL);
+        gtk_tree_model_get (process_model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "\tKill Process\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                 process_name,
+                                                 target_pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (target_pid, SIGKILL);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "\tERROR: %s\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                   g_strerror (errno),
+                                                   process_name,
+                                                   target_pid);
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
     }
 }
 
@@ -193,12 +229,48 @@ term_button_clicked (GtkButton *term_button,
     GtkTreeSelection *selection;
     GtkTreeModel     *process_model;
     GtkTreeIter       iter;
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
 
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (process_list));
     if (gtk_tree_selection_get_selected (selection, &process_model, &iter))
     {
         gtk_tree_model_get (process_model, &iter, PID_COLUMN, &target_pid, -1);
-        kill (target_pid, SIGTERM);
+        gtk_tree_model_get (process_model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "\tTerminate Process\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                 process_name,
+                                                 target_pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (target_pid, SIGTERM);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "\tERROR: %s\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                   g_strerror (errno),
+                                                   process_name,
+                                                   target_pid);
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
     }
 }
 
@@ -210,12 +282,48 @@ stop_button_clicked (GtkButton *stop_button,
     GtkTreeSelection *selection;
     GtkTreeModel     *process_model;
     GtkTreeIter       iter;
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
 
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (process_list));
     if (gtk_tree_selection_get_selected (selection, &process_model, &iter))
     {
         gtk_tree_model_get (process_model, &iter, PID_COLUMN, &target_pid, -1);
-        kill (target_pid, SIGSTOP);
+        gtk_tree_model_get (process_model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "\tStop Process\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                 process_name,
+                                                 target_pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (target_pid, SIGSTOP);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "\tERROR: %s\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                   g_strerror (errno),
+                                                   process_name,
+                                                   target_pid);
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
     }
 }
 
@@ -227,12 +335,48 @@ continue_button_clicked (GtkButton *continue_button,
     GtkTreeSelection *selection;
     GtkTreeModel     *process_model;
     GtkTreeIter       iter;
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
 
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (process_list));
     if (gtk_tree_selection_get_selected (selection, &process_model, &iter))
     {
         gtk_tree_model_get (process_model, &iter, PID_COLUMN, &target_pid, -1);
-        kill (target_pid, SIGCONT);
+        gtk_tree_model_get (process_model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "\tContinue Process\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                 process_name,
+                                                 target_pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (target_pid, SIGCONT);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "\tERROR: %s\n\tPROCESS NAME: %s\n\tPID: %d",
+                                                   g_strerror (errno),
+                                                   process_name,
+                                                   target_pid);
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
     }
 }
 
@@ -262,8 +406,8 @@ details_button_clicked (GtkButton *details_button,
         gtk_box_pack_start (GTK_BOX (details_content), details_text_view, TRUE, TRUE, 0);
         gtk_widget_show_all (GTK_WIDGET (details_dialog));
         gtk_dialog_run (GTK_DIALOG (details_dialog));
+        gtk_widget_destroy (details_dialog);
     }
-    gtk_widget_destroy (details_dialog);
 }
 
 void
@@ -416,7 +560,7 @@ gtm_rebuild_user_process_list (GtmWindow *win)
     gtk_widget_show_all (GTK_WIDGET (win));
 }
 
-void
+static gboolean
 renew_all (GtmWindow *win)
 {
     GtmWindowPrivate *priv;
@@ -452,13 +596,13 @@ renew_all (GtmWindow *win)
     }
 
     gtm_update_tasks_text_view_model (priv->tasks_text_view_model);
-    gtk_widget_show_all (GTK_WIDGET (win));
+
+    return TRUE;
 }
 
 static void
 gtm_window_constructed (GtmWindow *win)
 {
-    g_timeout_add (GTM_WINDOW_TIME_INTERVAL, G_SOURCE_FUNC (renew_all), win);
     G_OBJECT_CLASS (gtm_window_parent_class)->constructed (win);
 }
 
@@ -512,6 +656,7 @@ gtm_window_init (GtmWindow *win)
     g_signal_connect (priv->user_column3, "changed", G_CALLBACK (user_third_column_changed), win);
 
     gtk_window_set_default_size (GTK_WINDOW (win), GTM_WINDOW_WIDTH, GTM_WINDOW_HEIGHT);
+    g_timeout_add (GTM_WINDOW_TIME_INTERVAL, G_SOURCE_FUNC (renew_all), win);
     gtk_widget_show_all (GTK_WIDGET (win));
 }
 
