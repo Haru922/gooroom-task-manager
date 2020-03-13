@@ -1,0 +1,8 @@
+data/kr.gooroom.Gooroom-Task-Manager.desktop.in
+data/kr.gooroom.Gooroom-Task-Manager.appdata.xml.in
+data/kr.gooroom.Gooroom-Task-Manager.gschema.xml
+src/gooroom-task-manager-menu.ui
+src/gooroom-task-manager-window.ui
+src/gooroom-task-manager-main.c
+src/gooroom-task-manager-application.c
+src/gooroom-task-manager-window.c
