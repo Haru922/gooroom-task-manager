@@ -66,6 +66,7 @@ gtm_get_running_user_name (char *user_name)
             break;
         }
     }
+    g_free (pids);
 }
 
 void
